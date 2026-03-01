@@ -1,35 +1,75 @@
 <template>
-  <div class="max-w-xl bg-white p-6 shadow rounded">
-    <h2 class="text-xl font-bold mb-4">Raise Ticket</h2>
+  <div class="flex justify-center pt-10">
+    <div class="w-full max-w-xl bg-white p-8 rounded-xl shadow-sm border">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Raise Ticket</h2>
 
-    <select v-model="category" class="border w-full p-2 mb-4">
-      <option value="">Select Category</option>
+      <!-- Category -->
+      <div class="mb-5">
+        <label class="block text-sm font-medium text-gray-600 mb-2">
+          Category
+        </label>
 
-      <option v-for="cat in categories" :key="cat._id" :value="cat.name">
-        {{ cat.name }}
-      </option>
-    </select>
+        <select
+          v-model="category"
+          class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        >
+          <option value="">Select Category</option>
 
-    <select v-model="priority" class="border w-full p-2 mb-4">
-      <option value="">Priority</option>
-      <option>Low</option>
-      <option>Medium</option>
-      <option>High</option>
-      <option>Critical</option>
-    </select>
+          <option v-for="cat in categories" :key="cat._id" :value="cat.name">
+            {{ cat.name }}
+          </option>
+        </select>
+      </div>
 
-    <textarea
-      v-model="description"
-      placeholder="Describe your issue"
-      class="border w-full p-2 mb-4"
-    />
+      <!-- Priority -->
+      <div class="mb-5">
+        <label class="block text-sm font-medium text-gray-600 mb-2">
+          Priority
+        </label>
 
-    <button
-      @click="submitTicket"
-      class="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Submit Ticket
-    </button>
+        <select
+          v-model="priority"
+          class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        >
+          <option value="">Select Priority</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-600 mb-2">
+          Issue Description
+        </label>
+
+        <textarea
+          v-model="description"
+          rows="4"
+          placeholder="Describe your issue..."
+          class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        ></textarea>
+      </div>
+
+      <!-- Success Message -->
+      <div
+        v-if="successMessage"
+        class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg transition"
+      >
+        ✓ {{ successMessage }}
+      </div>
+
+      <button
+        @click="submitTicket"
+        :disabled="!category || !priority || !description || loading"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+      >
+        <span v-if="loading">Submitting...</span>
+        <span v-else>Submit Ticket</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -42,11 +82,14 @@ export default {
       category: "",
       priority: "",
       description: "",
+      successMessage: "",
+      loading: false,
     };
   },
 
   computed: {
     ...mapGetters("categories", ["categories"]),
+    ...mapGetters("auth", ["currentUser"]),
   },
 
   mounted() {
@@ -58,15 +101,21 @@ export default {
     ...mapActions("categories", ["fetchCategories"]),
 
     async submitTicket() {
+      this.loading = true;
       const payload = {
         category: this.category,
         priority: this.priority,
         description: this.description,
+        userEmail: this.currentUser?.email || "",
       };
-      console.log("Submitting Ticket with Payload:", payload); // Debug log to check payload before API call
-      let res = await this.createTicket(payload);
+      await this.createTicket(payload);
+      this.loading = false;
+      this.successMessage = "Ticket created successfully";
 
-      console.log("Ticket Creation Response:", res); // Debug log to check response
+      // reset form
+      this.category = "";
+      this.priority = "";
+      this.description = "";
 
       this.$router.push("/my-tickets");
     },

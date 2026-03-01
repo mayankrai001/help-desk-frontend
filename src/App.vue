@@ -1,31 +1,40 @@
 <template>
-  <div class="flex">
-    <Sidebar :collapsed="collapsed" @toggleSidebar="toggleSidebar" />
+  <div class="h-screen flex flex-col bg-gray-100">
+    <template v-if="!isAuthPage">
+      <Navbar />
 
-    <div class="flex-1 flex flex-col">
-      <Navbar @toggleSidebar="toggleSidebar" />
+      <div class="flex flex-1 overflow-hidden">
+        <Sidebar :collapsed="collapsed" @toggleSidebar="toggleSidebar" />
 
-      <div class="p-6 bg-gray-100 min-h-screen">
-        <router-view />
+        <main class="flex-1 overflow-y-auto p-6">
+          <router-view />
+        </main>
       </div>
-    </div>
+    </template>
+
+    <template v-else>
+      <router-view />
+    </template>
   </div>
 </template>
 
 <script>
-import Sidebar from "@/components/Layout/Sidebar.vue";
 import Navbar from "@/components/Layout/Navbar.vue";
+import Sidebar from "@/components/Layout/Sidebar.vue";
 
 export default {
-  components: {
-    Sidebar,
-    Navbar,
-  },
+  components: { Navbar, Sidebar },
 
   data() {
     return {
       collapsed: false,
     };
+  },
+
+  computed: {
+    isAuthPage() {
+      return ["/login", "/signup"].includes(this.$route.path);
+    },
   },
 
   methods: {

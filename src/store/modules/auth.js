@@ -1,8 +1,17 @@
 import { loginApi, signupApi } from "@/api/modules/auth";
 
+const getUserFromStorage = () => {
+  try {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+};
+
 const state = {
   token: localStorage.getItem("token") || null,
-  user: null,
+  user: getUserFromStorage(),
 };
 
 const mutations = {
@@ -13,12 +22,14 @@ const mutations = {
 
   SET_USER(state, user) {
     state.user = user;
+    localStorage.setItem("user", JSON.stringify(user));
   },
 
   LOGOUT(state) {
     state.token = null;
     state.user = null;
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   },
 };
 

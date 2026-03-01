@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/Login.vue";
-// import Signup from "@/views/Signup.vue";
 import Dashboard from "@/views/Dashboard.vue";
 
 const routes = [
@@ -8,6 +7,11 @@ const routes = [
     path: "/login",
     name: "LoginView",
     component: LoginView,
+  },
+  {
+    path: "/signup",
+    name: "SignupView",
+    component: () => import("@/views/Signup.vue"),
   },
   {
     path: "/raise-ticket",
@@ -19,17 +23,11 @@ const routes = [
     component: () => import("@/views/dashboard/MyTickets.vue"),
     meta: { requiresAuth: true },
   },
-  // {
-  //   path: "/signup",
-  //   name: "Signup",
-  //   component: Signup,
-  // },
-
   {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiresAdmin: true },
   },
 ];
 
@@ -38,12 +36,37 @@ const router = createRouter({
   routes,
 });
 
+const getUserFromStorage = () => {
+  try {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+};
+
+const isAdminUser = () => {
+  const user = getUserFromStorage();
+  const role = user?.role;
+  return role ? String(role).toLowerCase() === "admin" : false;
+};
+
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
+
+  if ((to.path === "/login" || to.path === "/signup") && token) {
+    return next(isAdminUser() ? "/dashboard" : "/my-tickets");
+  }
 
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!token) {
       return next("/login");
+    }
+  }
+
+  if (to.matched.some((route) => route.meta.requiresAdmin)) {
+    if (!isAdminUser()) {
+      return next("/my-tickets");
     }
   }
 
