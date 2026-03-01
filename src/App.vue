@@ -1,30 +1,37 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="flex">
+    <Sidebar :collapsed="collapsed" @toggleSidebar="toggleSidebar" />
+
+    <div class="flex-1 flex flex-col">
+      <Navbar @toggleSidebar="toggleSidebar" />
+
+      <div class="p-6 bg-gray-100 min-h-screen">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Sidebar from "@/components/Layout/Sidebar.vue";
+import Navbar from "@/components/Layout/Navbar.vue";
 
-nav {
-  padding: 30px;
-}
+export default {
+  components: {
+    Sidebar,
+    Navbar,
+  },
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  data() {
+    return {
+      collapsed: false,
+    };
+  },
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  methods: {
+    toggleSidebar() {
+      this.collapsed = !this.collapsed;
+    },
+  },
+};
+</script>
