@@ -4,5 +4,6 @@ import router from "./router";
 import store from "./store";
 import "./assets/css/tailwind.css";
 import "./assets/css/main.css";
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 createApp(App).use(store).use(router).mount("#app");

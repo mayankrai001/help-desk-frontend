@@ -34,6 +34,7 @@
             <th class="px-6 py-3 text-left">Priority</th>
             <th class="px-6 py-3 text-left">Status</th>
             <th class="px-6 py-3 text-left">Update</th>
+            <th class="px-6 py-3 text-left">View</th>
           </tr>
         </thead>
 
@@ -70,6 +71,15 @@
                 <option>Completed</option>
               </select>
             </td>
+            <td class="px-6 py-4">
+              <button
+                @click="openTicket(ticket)"
+                title="View Ticket"
+                class="p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -93,14 +103,26 @@
         Next
       </button>
     </div>
+
+    <!-- Modal -->
+    <ticketModal
+      :show="showModal"
+      :ticket="selectedTicket"
+      @close="showModal = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
   props: ["tickets"],
+
+  components: {
+    ticketModal,
+  },
 
   data() {
     return {
@@ -109,6 +131,9 @@ export default {
       priorityFilter: "",
       page: 1,
       perPage: 5,
+
+      showModal: false,
+      selectedTicket: {},
     };
   },
 
@@ -162,6 +187,11 @@ export default {
       if (this.page > 1) {
         this.page--;
       }
+    },
+
+    openTicket(ticket) {
+      this.selectedTicket = ticket;
+      this.showModal = true;
     },
   },
 };
