@@ -57,7 +57,7 @@ export default {
     ticket: Object,
   },
   mounted() {
-    console.log("Ticket Modal Mounted with ticket:", this.ticket);
+    // console.log("Ticket Modal Mounted with ticket:", this.ticket);
   },
 };
 </script>
