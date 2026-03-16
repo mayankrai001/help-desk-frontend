@@ -1,43 +1,29 @@
 <template>
-  <header class="navbar-header">
+  <header class="h-20 min-h-[5rem] bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm flex items-center justify-between px-6 sticky top-0 z-40 transition-all duration-300">
     <!-- LOGO -->
-    <router-link :to="homeRoute" class="logo-wrapper">
-      <div class="logo-container">
-        <img src="@/assets/logo.png" alt="Ask IT" class="logo-img" />
+    <router-link :to="homeRoute" class="flex items-center gap-3 px-3 py-2 -ml-2 rounded-xl hover:bg-slate-100/50 transition-colors duration-200">
+      <div class="flex items-center justify-center w-[52px] h-[52px] bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200/60 rounded-xl p-2 shadow-[0_2px_8px_rgba(59,130,246,0.15)]">
+        <img src="@/assets/logo.png" alt="Ask IT" class="h-9 w-auto object-contain drop-shadow-sm" />
       </div>
-      <span class="logo-text">Ask IT</span>
+      <span class="font-bold text-[1.35rem] text-slate-800 tracking-tight">Ask IT</span>
     </router-link>
 
-    <!-- CENTER SEARCH -->
-
-    <!-- <div class="w-96">
-      <div class="relative">
-        <Search class="absolute left-3 top-2.5 text-gray-400" size="16" />
-
-        <input
-          placeholder="Search tickets..."
-          class="w-full border rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-    </div> -->
-
     <!-- RIGHT -->
-
-    <div class="navbar-right">
-      <button class="navbar-icon-btn" title="Notifications">
-        <Bell size="20" />
+    <div class="flex items-center gap-4">
+      <button class="flex items-center justify-center w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors" title="Notifications">
+        <Bell size="20" class="drop-shadow-sm" />
       </button>
 
-      <div class="navbar-user">
-        <div class="navbar-avatar">
+      <div class="flex items-center gap-3 py-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-500 text-white flex items-center justify-center text-sm font-semibold shadow-[0_2px_6px_rgba(59,130,246,0.35)]">
           {{ userInitial }}
         </div>
 
-        <div class="navbar-user-info">
-          <span class="navbar-user-name">
+        <div class="flex flex-col leading-snug">
+          <span class="text-sm font-semibold text-slate-800">
             {{ currentUser?.name || "User" }}
           </span>
-          <span v-if="currentUser?.companyName" class="navbar-user-company">
+          <span v-if="currentUser?.companyName" class="text-xs text-slate-500 font-medium">
             {{ currentUser.companyName }}
           </span>
         </div>
