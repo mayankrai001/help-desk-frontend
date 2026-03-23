@@ -7,3 +7,7 @@ export const loginApi = (payload) => {
 export const signupApi = (payload) => {
   return api.post("/auth/signup", payload);
 };
+
+export const loginMicrosoft = () => {
+  return api.get("/auth/microsoft");
+};

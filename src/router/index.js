@@ -14,6 +14,11 @@ const routes = [
     component: () => import("@/views/Signup.vue"),
   },
   {
+    path: "/auth/microsoft/callback",
+    name: "AuthCallbackView",
+    component: () => import("@/views/AuthCallback.vue"),
+  },
+  {
     path: "/raise-ticket",
     component: () => import("@/views/dashboard/RaiseTicket.vue"),
     meta: { requiresAuth: true },

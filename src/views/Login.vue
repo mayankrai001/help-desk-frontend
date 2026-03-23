@@ -180,6 +180,35 @@
             </span>
           </button>
 
+          <!-- Microsoft Login Button -->
+          <div class="relative mt-4">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-slate-200"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-slate-50 text-slate-500"
+                >Or continue with</span
+              >
+            </div>
+          </div>
+
+          <button
+            @click.prevent="loginWithMicrosoft"
+            class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold rounded-xl p-3.5 mt-4 transition-all duration-300 transform active:scale-[0.98] hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm"
+          >
+            <svg
+              class="w-5 h-5"
+              viewBox="0 0 21 21"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="#f25022" d="M1 1h9v9H1z" />
+              <path fill="#00a4ef" d="M11 1h9v9h-9z" />
+              <path fill="#7fba00" d="M1 11h9v9H1z" />
+              <path fill="#ffb900" d="M11 11h9v9h-9z" />
+            </svg>
+            Microsoft
+          </button>
+
           <div class="flex items-center justify-center gap-2 mt-6">
             <span class="text-slate-500 text-sm">Don't have an account?</span>
             <router-link
@@ -209,7 +238,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("auth", ["login"]),
+    ...mapActions("auth", ["login", "loginMicrosoft"]),
 
     async handleLogin() {
       if (!this.email?.trim() || !this.password) {
@@ -235,6 +264,10 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    async loginWithMicrosoft() {
+      await this.loginMicrosoft();
     },
   },
 };
