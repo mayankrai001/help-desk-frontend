@@ -55,8 +55,7 @@ const actions = {
     // For OAuth to work correctly, we must redirect the browser directly
     // to the backend endpoint so the user can interact with the Microsoft login page.
     const baseUrl = process.env.VUE_APP_API_URL || "http://localhost:5000/api";
-    console.log("++++ baseURL ++++", baseUrl);
-    // window.location.href = `${baseUrl}auth/microsoft`;
+    window.location.href = `${baseUrl}/auth/microsoft`;
   },
 };
 
