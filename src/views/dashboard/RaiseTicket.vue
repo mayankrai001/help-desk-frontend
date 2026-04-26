@@ -9,6 +9,44 @@
       <!-- Decorative background accent -->
       <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10 opacity-60"></div>
 
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+        <!-- Name (Auto-filled) -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Your Name
+          </label>
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            </div>
+            <input
+              type="text"
+              :value="currentUser?.name"
+              readonly
+              class="bg-slate-100 border border-slate-200 text-slate-500 text-sm rounded-xl block w-full pl-11 p-3.5 cursor-not-allowed"
+            />
+          </div>
+        </div>
+
+        <!-- Email (Auto-filled) -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Your Email
+          </label>
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <input
+              type="text"
+              :value="currentUser?.email"
+              readonly
+              class="bg-slate-100 border border-slate-200 text-slate-500 text-sm rounded-xl block w-full pl-11 p-3.5 cursor-not-allowed"
+            />
+          </div>
+        </div>
+      </div>
+
       <!-- Category -->
       <div class="mb-5">
         <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
@@ -29,6 +67,28 @@
             </option>
           </select>
           <!-- Custom Dropdown Arrow -->
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Category (cascading) -->
+      <div class="mb-5" v-if="subCategoryOptions.length">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+          Sub-Category
+        </label>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z"></path></svg>
+          </div>
+          <select
+            v-model="subCategory"
+            class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full pl-11 p-3.5 transition-all outline-none appearance-none"
+          >
+            <option value="" disabled>Select Sub-Category (optional)</option>
+            <option v-for="sub in subCategoryOptions" :key="sub" :value="sub">{{ sub }}</option>
+          </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
@@ -111,6 +171,7 @@ export default {
   data() {
     return {
       category: "",
+      subCategory: "",
       priority: "",
       description: "",
       successMessage: "",
@@ -121,10 +182,29 @@ export default {
   computed: {
     ...mapGetters("categories", ["categories"]),
     ...mapGetters("auth", ["currentUser"]),
+
+    subCategoryOptions() {
+      const map = {
+        Hardware: ["Accessories", "Laptop", "Monitor", "Printer", "Wireless Mouse / Keyboard", "Others"],
+        Salesforce: ["Invoice Generation Issues", "Login Issues", "Access Request"],
+        SharePoint: ["Access Request", "Access Granting", "Revoking Access", "Guest ID Whitelisting", "Creating a Site", "Login Issues"],
+        "Business Central": ["Login Issues", "Access Request"],
+        Application: ["App Installation", "Foxit License Requirement", "Outlook Issue", "Adobe Not Working", "VPN Not Working"],
+        VPN: ["ID Creation", "Tunnel Creation"],
+        "System Issue": ["Device Slow", "Laptop Not Powering On", "Battery Not Charging / Draining Fast", "Broken or Flickering Screen", "Keyboard / Touchpad Not Working", "USB / HDMI Port Not Working", "Audio Not Working", "Camera Not Working"],
+      };
+      return map[this.category] || [];
+    },
   },
 
   mounted() {
     this.fetchCategories();
+  },
+
+  watch: {
+    category() {
+      this.subCategory = "";
+    },
   },
 
   methods: {
@@ -135,6 +215,7 @@ export default {
       this.loading = true;
       const payload = {
         category: this.category,
+        subCategory: this.subCategory || undefined,
         priority: this.priority,
         description: this.description,
         userEmail: this.currentUser?.email || "",
@@ -145,6 +226,7 @@ export default {
 
       // reset form
       this.category = "";
+      this.subCategory = "";
       this.priority = "";
       this.description = "";
 

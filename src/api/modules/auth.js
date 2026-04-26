@@ -11,3 +11,15 @@ export const signupApi = (payload) => {
 export const loginMicrosoft = () => {
   return api.get("/auth/microsoft");
 };
+
+export const teamsSSOApi = (token) => {
+  return api.post("/auth/teams-sso", { token });
+};
+
+export const getMeApi = () => {
+  return api.get("/auth/me");
+};
+
+export const logoutApi = () => {
+  return api.post("/auth/logout");
+};

@@ -41,7 +41,9 @@
               <th scope="col" class="px-6 py-4 tracking-wider">Category</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Status</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Update</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">Assigned To</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">Delegate</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">Update Status</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Action</th>
             </tr>
           </thead>
@@ -78,6 +80,23 @@
                   <span class="w-1.5 h-1.5 rounded-full mr-1.5" :class="statusDotClass(ticket.status)"></span>
                   {{ ticket.status }}
                 </span>
+              </td>
+
+              <td class="px-6 py-4 text-center">
+                <span class="text-slate-600 font-medium">{{ ticket.assignedToName || 'Unassigned' }}</span>
+              </td>
+
+              <td class="px-6 py-4 text-center">
+                <select
+                  @change="handleDelegate(ticket, $event)"
+                  :value="ticket.assignedToEmail || ''"
+                  class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 p-1.5 transition-all outline-none font-medium hover:bg-white cursor-pointer max-w-[120px]"
+                >
+                  <option disabled value="">Assign To...</option>
+                  <option v-for="admin in allAdmins" :key="admin.email" :value="admin.email">
+                    {{ admin.name || admin.email }}
+                  </option>
+                </select>
               </td>
 
               <td class="px-6 py-4 text-center">
@@ -156,7 +175,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import Swal from "sweetalert2";
 import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
@@ -180,6 +200,20 @@ export default {
   },
 
   computed: {
+    ...mapGetters("subAdmin", ["subAdmins"]),
+    ...mapGetters("auth", ["currentUser"]),
+
+    allAdmins() {
+      // Create a list of all potential handlers (Primary Admin + SubAdmins)
+      const list = [...this.subAdmins];
+      
+      // If current user is logged in, they are an admin, add them if not in list
+      if (this.currentUser && !list.find(a => a.email === this.currentUser.email)) {
+         list.unshift({ email: this.currentUser.email, name: this.currentUser.name || 'Primary Admin' });
+      }
+      return list;
+    },
+
     filteredTickets() {
       return this.tickets.filter((ticket) => {
         const matchSearch = ticket.ticketId
@@ -206,8 +240,59 @@ export default {
     },
   },
 
+  mounted() {
+    // Fetch sub-admins so we can populate the delegate dropdown
+    this.fetchSubAdmins();
+  },
+
   methods: {
-    ...mapActions("ticket", ["updateTicketStatus"]),
+    ...mapActions("ticket", ["updateTicketStatus", "delegateTicket"]),
+    ...mapActions("subAdmin", ["fetchSubAdmins"]),
+
+    async handleDelegate(ticket, event) {
+      if (!event.target.value) return;
+      
+      const adminName = event.target.options[event.target.selectedIndex].text;
+      
+      const result = await Swal.fire({
+        title: "Delegate Ticket?",
+        text: `Are you sure you want to delegate this ticket to ${adminName}?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#2563EB",
+        cancelButtonColor: "#94A3B8",
+        confirmButtonText: "Yes, delegate it!"
+      });
+
+      if (!result.isConfirmed) {
+        event.target.value = ticket.assignedToEmail || ''; // revert if canceled
+        return;
+      }
+      
+      try {
+        await this.delegateTicket({
+          ticketId: ticket._id,
+          email: event.target.value,
+        });
+        
+        Swal.fire({
+          title: "Delegated!",
+          text: `Ticket successfully assigned to ${adminName}.`,
+          icon: "success",
+          confirmButtonColor: "#10B981",
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (err) {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to delegate ticket.",
+          icon: "error",
+          confirmButtonColor: "#EF4444"
+        });
+        event.target.value = ticket.assignedToEmail || ''; // revert on error
+      }
+    },
 
     updateStatus(ticket, event) {
       if (!event.target.value) return;

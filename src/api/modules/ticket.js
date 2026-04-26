@@ -15,3 +15,7 @@ export const getAllTicketsApi = () => {
 export const updateTicketStatusApi = (ticketId, payload) => {
   return api.patch(`/tickets/admin/${ticketId}/status`, payload);
 };
+
+export const delegateTicketApi = (ticketId, email) => {
+  return api.patch(`/tickets/admin/${ticketId}/delegate`, { email });
+};

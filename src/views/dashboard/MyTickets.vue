@@ -22,6 +22,7 @@
               <th scope="col" class="px-6 py-4 tracking-wider">Ticket ID</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Category</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
+              <th scope="col" class="px-6 py-4 tracking-wider">Assigned To</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Status</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-right">Created</th>
             </tr>
@@ -49,6 +50,10 @@
                   <span class="w-1.5 h-1.5 rounded-full mr-1.5" :class="priorityDotClass(ticket.priority)"></span>
                   {{ ticket.priority }}
                 </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <span class="text-slate-600">{{ ticket.assignedToName || 'Unassigned' }}</span>
               </td>
 
               <td class="px-6 py-4 text-center">

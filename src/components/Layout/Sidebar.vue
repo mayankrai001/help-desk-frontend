@@ -26,6 +26,15 @@
         <span v-if="!collapsed" class="text-sm"> Dashboard </span>
       </router-link>
 
+      <router-link
+        v-if="isAdmin"
+        to="/manage-admins"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold"
+      >
+        <Users size="20" class="group-[.router-link-active]:text-blue-600 transition-colors" />
+        <span v-if="!collapsed" class="text-sm"> Manage Admins </span>
+      </router-link>
+
       <router-link 
         to="/raise-ticket" 
         class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold"
@@ -75,6 +84,7 @@ import {
   Ticket,
   FileText,
   LogOut,
+  Users,
   ChevronLeft,
   ChevronRight,
 } from "lucide-vue-next";
@@ -106,6 +116,7 @@ export default {
     Ticket,
     FileText,
     LogOut,
+    Users,
     ChevronLeft,
     ChevronRight,
   },

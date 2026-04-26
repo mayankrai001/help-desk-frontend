@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store";
 import LoginView from "@/views/Login.vue";
 import Dashboard from "@/views/Dashboard.vue";
 
@@ -34,6 +35,12 @@ const routes = [
     component: Dashboard,
     meta: { requiresAuth: true, requiresAdmin: true },
   },
+  {
+    path: "/manage-admins",
+    name: "ManageAdmins",
+    component: () => import("@/views/dashboard/ManageAdmins.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
 ];
 
 const router = createRouter({
@@ -41,36 +48,28 @@ const router = createRouter({
   routes,
 });
 
-const getUserFromStorage = () => {
-  try {
-    const stored = localStorage.getItem("user");
-    return stored ? JSON.parse(stored) : null;
-  } catch {
-    return null;
+router.beforeEach(async (to, from, next) => {
+  // Wait for the auth status to be checked from the backend
+  if (!store.getters["auth/isAuthChecked"]) {
+    await store.dispatch("auth/checkAuth");
   }
-};
 
-const isAdminUser = () => {
-  const user = getUserFromStorage();
-  const role = user?.role;
-  return role ? String(role).toLowerCase() === "admin" : false;
-};
+  const isAuthenticated = store.getters["auth/isAuthenticated"];
+  const user = store.getters["auth/currentUser"];
+  const isAdmin = user?.role && String(user.role).toLowerCase() === "admin";
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token");
-
-  if ((to.path === "/login" || to.path === "/signup") && token) {
-    return next(isAdminUser() ? "/dashboard" : "/my-tickets");
+  if ((to.path === "/login" || to.path === "/signup") && isAuthenticated) {
+    return next(isAdmin ? "/dashboard" : "/my-tickets");
   }
 
   if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (!token) {
+    if (!isAuthenticated) {
       return next("/login");
     }
   }
 
   if (to.matched.some((route) => route.meta.requiresAdmin)) {
-    if (!isAdminUser()) {
+    if (!isAdmin) {
       return next("/my-tickets");
     }
   }

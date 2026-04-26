@@ -3,6 +3,7 @@ import {
   getMyTicketsApi,
   getAllTicketsApi,
   updateTicketStatusApi,
+  delegateTicketApi,
 } from "@/api/modules/ticket";
 
 const state = {
@@ -35,6 +36,11 @@ const actions = {
     await updateTicketStatusApi(payload.ticketId, {
       status: payload.status,
     });
+    dispatch("fetchAdminTickets");
+  },
+
+  async delegateTicket({ dispatch }, { ticketId, email }) {
+    await delegateTicketApi(ticketId, email);
     dispatch("fetchAdminTickets");
   },
 };
