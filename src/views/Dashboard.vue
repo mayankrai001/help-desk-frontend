@@ -15,23 +15,23 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Total Tickets -->
       <div
-        class="relative overflow-hidden bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.1)] hover:-translate-y-1 transition-all duration-300"
       >
         <div
-          class="absolute right-0 top-0 w-24 h-24 bg-blue-50 rounded-bl-full -z-10 opacity-60"
+          class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-colors duration-300 pointer-events-none"
         ></div>
-        <div class="flex justify-between items-start mb-4">
+        <div class="flex justify-between items-start mb-6">
           <div>
             <p
-              class="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider"
+              class="text-slate-400 text-xs font-bold mb-1.5 uppercase tracking-widest"
             >
               Total Tickets
             </p>
-            <h3 class="text-4xl font-bold text-slate-800">
+            <h3 class="text-4xl font-extrabold text-slate-800 tracking-tight">
               {{ totalTickets }}
             </h3>
           </div>
-          <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+          <div class="p-3.5 bg-gradient-to-br from-blue-50 to-blue-100/50 text-blue-600 rounded-2xl shadow-[0_4px_12px_rgba(59,130,246,0.15)] group-hover:scale-110 transition-transform duration-300">
             <svg
               class="w-6 h-6"
               fill="none"
@@ -51,23 +51,23 @@
 
       <!-- Open Tickets -->
       <div
-        class="relative overflow-hidden bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(245,158,11,0.1)] hover:-translate-y-1 transition-all duration-300"
       >
         <div
-          class="absolute right-0 top-0 w-24 h-24 bg-yellow-50 rounded-bl-full -z-10 opacity-60"
+          class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-amber-400/20 rounded-full blur-2xl group-hover:bg-amber-400/30 transition-colors duration-300 pointer-events-none"
         ></div>
-        <div class="flex justify-between items-start mb-4">
+        <div class="flex justify-between items-start mb-6">
           <div>
             <p
-              class="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider"
+              class="text-slate-400 text-xs font-bold mb-1.5 uppercase tracking-widest"
             >
               Open Tickets
             </p>
-            <h3 class="text-4xl font-bold text-yellow-600">
+            <h3 class="text-4xl font-extrabold text-amber-500 tracking-tight">
               {{ openTickets }}
             </h3>
           </div>
-          <div class="p-3 bg-yellow-50 text-yellow-600 rounded-xl">
+          <div class="p-3.5 bg-gradient-to-br from-amber-50 to-amber-100/50 text-amber-500 rounded-2xl shadow-[0_4px_12px_rgba(245,158,11,0.15)] group-hover:scale-110 transition-transform duration-300">
             <svg
               class="w-6 h-6"
               fill="none"
@@ -87,23 +87,23 @@
 
       <!-- Completed Tickets -->
       <div
-        class="relative overflow-hidden bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.1)] hover:-translate-y-1 transition-all duration-300"
       >
         <div
-          class="absolute right-0 top-0 w-24 h-24 bg-green-50 rounded-bl-full -z-10 opacity-60"
+          class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-emerald-400/20 rounded-full blur-2xl group-hover:bg-emerald-400/30 transition-colors duration-300 pointer-events-none"
         ></div>
-        <div class="flex justify-between items-start mb-4">
+        <div class="flex justify-between items-start mb-6">
           <div>
             <p
-              class="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider"
+              class="text-slate-400 text-xs font-bold mb-1.5 uppercase tracking-widest"
             >
               Completed Tickets
             </p>
-            <h3 class="text-4xl font-bold text-emerald-600">
+            <h3 class="text-4xl font-extrabold text-emerald-500 tracking-tight">
               {{ completedTickets }}
             </h3>
           </div>
-          <div class="p-3 bg-green-50 text-emerald-600 rounded-xl">
+          <div class="p-3.5 bg-gradient-to-br from-emerald-50 to-emerald-100/50 text-emerald-500 rounded-2xl shadow-[0_4px_12px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-300">
             <svg
               class="w-6 h-6"
               fill="none"
@@ -124,12 +124,12 @@
 
     <!-- Recent Tickets Section -->
     <div
-      class="bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden"
+      class="bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden"
     >
       <div
-        class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
+        class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
       >
-        <h2 class="text-xl font-bold text-slate-800">Recent Tickets</h2>
+        <h2 class="text-xl font-bold text-slate-800 tracking-tight">Recent Tickets</h2>
       </div>
 
       <!-- Recent Tickets Table Component -->

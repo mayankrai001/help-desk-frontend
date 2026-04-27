@@ -28,18 +28,18 @@
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-slate-100 bg-white">
+          <tbody class="divide-y divide-slate-100/60 bg-transparent">
             <tr
               v-for="ticket in tickets"
               :key="ticket._id"
-              class="hover:bg-blue-50/40 transition-colors group"
+              class="bg-white hover:bg-slate-50/60 transition-all duration-300 group hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-[1px]"
             >
-              <td class="px-6 py-4 border-l-2 border-transparent group-hover:border-blue-500">
-                <span class="font-mono font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md text-xs">{{ ticket.ticketId }}</span>
+              <td class="px-6 py-4 border-l-4 border-transparent group-hover:border-blue-500 transition-colors">
+                <span class="font-mono font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
               </td>
 
               <td class="px-6 py-4">
-                <span class="font-medium text-slate-800">{{ ticket.category }}</span>
+                <span class="font-semibold text-slate-800">{{ ticket.category }}</span>
               </td>
 
               <td class="px-6 py-4 text-center">
@@ -53,7 +53,7 @@
               </td>
 
               <td class="px-6 py-4">
-                <span class="text-slate-600">{{ ticket.assignedToName || 'Unassigned' }}</span>
+                <span class="text-slate-600 font-medium">{{ ticket.assignedToName || 'Unassigned' }}</span>
               </td>
 
               <td class="px-6 py-4 text-center">
