@@ -28,6 +28,13 @@
           <option>High</option>
           <option>Critical</option>
         </select>
+
+        <select v-model="departmentFilter" class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium">
+          <option value="">All Departments</option>
+          <option v-for="dept in departments" :key="dept" :value="dept">
+            {{ dept }}
+          </option>
+        </select>
       </div>
     </div>
 
@@ -38,6 +45,7 @@
           <thead class="text-xs text-slate-500 bg-slate-50/80 uppercase font-semibold border-b border-slate-100">
             <tr>
               <th scope="col" class="px-6 py-4 tracking-wider">Ticket ID</th>
+              <th scope="col" class="px-6 py-4 tracking-wider">Department</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Category</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Status</th>
@@ -56,6 +64,10 @@
             >
               <td class="px-6 py-4 border-l-4 border-transparent group-hover:border-blue-500 transition-colors">
                 <span class="font-mono font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
+              </td>
+
+              <td class="px-6 py-4">
+                <span class="font-semibold text-slate-700">{{ ticket.department || 'N/A' }}</span>
               </td>
 
               <td class="px-6 py-4">
@@ -191,11 +203,25 @@ export default {
       search: "",
       statusFilter: "",
       priorityFilter: "",
+      departmentFilter: "",
       page: 1,
       perPage: 5,
 
       showModal: false,
       selectedTicket: {},
+      departments: [
+        "IT",
+        "FINANCE",
+        "PROCUREMENT",
+        "PROJECT MANAGEMENT",
+        "INFRASTRUCTURE AND DEVELOPMENT",
+        "OPERATIONS AND MAINTENANCE",
+        "LEGAL",
+        "CORPORATE",
+        "RISK MANAGEMENT",
+        "HR and Administration",
+        "Wind",
+      ],
     };
   },
 
@@ -226,7 +252,10 @@ export default {
         const matchPriority =
           !this.priorityFilter || ticket.priority === this.priorityFilter;
 
-        return matchSearch && matchStatus && matchPriority;
+        const matchDepartment =
+          !this.departmentFilter || ticket.department === this.departmentFilter;
+
+        return matchSearch && matchStatus && matchPriority && matchDepartment;
       });
     },
 

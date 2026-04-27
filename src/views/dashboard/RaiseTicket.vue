@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl mx-auto py-8 px-4">
+  <div class="max-w-5xl mx-auto py-8 px-4">
     <div class="mb-8">
       <h2 class="text-3xl font-bold tracking-tight text-slate-800">
         Raise Ticket
@@ -83,163 +83,219 @@
         </div>
       </div>
 
-      <!-- Category -->
-      <div class="mb-5">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
-          Category
-        </label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+        <!-- Category -->
+        <div class="mb-5">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Category
+          </label>
 
-        <div class="relative group">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div class="relative group">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              ></path>
-            </svg>
-          </div>
-          <select
-            v-model="category"
-            class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
-          >
-            <option value="" disabled>Select Category</option>
-            <option v-for="cat in categories" :key="cat._id" :value="cat.name">
-              {{ cat.name }}
-            </option>
-          </select>
-          <!-- Custom Dropdown Arrow -->
-          <div
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                ></path>
+              </svg>
+            </div>
+            <select
+              v-model="category"
+              class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
+              <option value="" disabled>Select Category</option>
+              <option v-for="cat in categories" :key="cat._id" :value="cat.name">
+                {{ cat.name }}
+              </option>
+            </select>
+            <!-- Custom Dropdown Arrow -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Sub-Category (cascading) -->
-      <div class="mb-5" v-if="subCategoryOptions.length">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
-          Sub-Category
-        </label>
-        <div class="relative group">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <!-- Department -->
+        <div class="mb-5">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Department
+          </label>
+
+          <div class="relative group">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z"
-              ></path>
-            </svg>
-          </div>
-          <select
-            v-model="subCategory"
-            class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
-          >
-            <option value="" disabled>Select Sub-Category (optional)</option>
-            <option v-for="sub in subCategoryOptions" :key="sub" :value="sub">
-              {{ sub }}
-            </option>
-          </select>
-          <div
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+            </div>
+            <select
+              v-model="department"
+              class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
+              <option value="" disabled>Select Department</option>
+              <option v-for="dept in departments" :key="dept" :value="dept">
+                {{ dept }}
+              </option>
+            </select>
+            <!-- Custom Dropdown Arrow -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Priority -->
-      <div class="mb-5">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
-          Priority
-        </label>
-
-        <div class="relative group">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <!-- Sub-Category (cascading) -->
+        <div class="mb-5" v-if="subCategoryOptions.length">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Sub-Category
+          </label>
+          <div class="relative group">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
-              ></path>
-            </svg>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z"
+                ></path>
+              </svg>
+            </div>
+            <select
+              v-model="subCategory"
+              class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
+            >
+              <option value="" disabled>Select Sub-Category (optional)</option>
+              <option v-for="sub in subCategoryOptions" :key="sub" :value="sub">
+                {{ sub }}
+              </option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
           </div>
-          <select
-            v-model="priority"
-            class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
-          >
-            <option value="" disabled>Select Priority</option>
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-            <option>Critical</option>
-          </select>
-          <!-- Custom Dropdown Arrow -->
-          <div
-            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        </div>
+
+        <!-- Priority -->
+        <div class="mb-5">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Priority
+          </label>
+
+          <div class="relative group">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+                ></path>
+              </svg>
+            </div>
+            <select
+              v-model="priority"
+              class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
+            >
+              <option value="" disabled>Select Priority</option>
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+            <!-- Custom Dropdown Arrow -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -286,7 +342,7 @@
       <!-- Submit Button -->
       <button
         @click="submitTicket"
-        :disabled="!category || !priority || !description || loading"
+        :disabled="!category || !priority || !description || !department || loading"
         class="relative w-full sm:w-auto sm:min-w-[200px] overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl px-6 py-4 transition-all duration-300 transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed hover:shadow-[0_12px_24px_rgba(37,99,235,0.25)] hover:-translate-y-0.5 before:absolute before:inset-0 before:bg-white/20 before:translate-x-full hover:before:animate-[shimmer_1s] flex items-center justify-center gap-2"
       >
         <svg
@@ -337,10 +393,24 @@ export default {
     return {
       category: "",
       subCategory: "",
+      department: "",
       priority: "",
       description: "",
       successMessage: "",
       loading: false,
+      departments: [
+        "IT",
+        "FINANCE",
+        "PROCUREMENT",
+        "PROJECT MANAGEMENT",
+        "INFRASTRUCTURE AND DEVELOPMENT",
+        "OPERATIONS AND MAINTENANCE",
+        "LEGAL",
+        "CORPORATE",
+        "RISK MANAGEMENT",
+        "HR and Administration",
+        "Wind",
+      ],
     };
   },
 
@@ -389,6 +459,12 @@ export default {
           "Audio Not Working",
           "Camera Not Working",
         ],
+        "Power BI":[
+          "Dashboard refresh request",
+          "License request",
+          "New reports creation request",
+          "Old report changes request"
+        ]
       };
       return map[this.category] || [];
     },
@@ -413,6 +489,7 @@ export default {
       const payload = {
         category: this.category,
         subCategory: this.subCategory || undefined,
+        department: this.department,
         priority: this.priority,
         description: this.description,
         userEmail: this.currentUser?.email || "",
@@ -424,6 +501,7 @@ export default {
       // reset form
       this.category = "";
       this.subCategory = "";
+      this.department = "";
       this.priority = "";
       this.description = "";
 

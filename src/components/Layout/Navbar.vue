@@ -10,10 +10,6 @@
 
     <!-- RIGHT -->
     <div class="flex items-center gap-5">
-      <button class="relative flex items-center justify-center w-10 h-10 rounded-full text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-all duration-300" title="Notifications">
-        <Bell size="20" />
-        <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 border border-white rounded-full shadow-sm"></span>
-      </button>
 
       <div class="flex items-center gap-3 py-1.5 px-3 rounded-2xl hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-sm cursor-pointer transition-all duration-300">
         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-[0_2px_10px_rgba(59,130,246,0.4)]">
@@ -35,14 +31,13 @@
 </template>
 
 <script>
-import { Bell, ChevronDown } from "lucide-vue-next";
+import { ChevronDown } from "lucide-vue-next";
 import { mapGetters } from "vuex";
 
 export default {
   name: "NavbarLayout",
 
   components: {
-    Bell,
     ChevronDown,
   },
 

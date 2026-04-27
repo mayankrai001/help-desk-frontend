@@ -34,6 +34,24 @@
             </div>
           </div>
 
+          <!-- Category, Priority, Status, Department Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-4 border-b border-slate-100">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Raised By</p>
+              <p class="text-sm font-medium text-slate-800 flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                {{ ticket.userId?.name || 'Unknown' }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Department</p>
+              <p class="text-sm font-medium text-slate-800 flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                {{ ticket.department || 'N/A' }}
+              </p>
+            </div>
+          </div>
+
           <!-- Category, Priority, Status Row -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-4 border-b border-slate-100">
             <div>
@@ -45,13 +63,19 @@
             </div>
             <div>
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Priority</p>
-              <span class="inline-flex px-2.5 py-1 text-xs font-bold rounded-full text-slate-700 bg-slate-100 border border-slate-200">
+              <span 
+                class="inline-flex px-2.5 py-1 text-xs font-bold rounded-full border transition-colors"
+                :class="priorityClass(ticket.priority)"
+              >
                 {{ ticket.priority }}
               </span>
             </div>
             <div>
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Status</p>
-              <span class="inline-flex px-2.5 py-1 text-xs font-bold rounded-full text-slate-700 bg-slate-100 border border-slate-200">
+              <span 
+                class="inline-flex px-2.5 py-1 text-xs font-bold rounded-full border transition-colors"
+                :class="statusClass(ticket.status)"
+              >
                 {{ ticket.status }}
               </span>
             </div>
@@ -89,6 +113,19 @@ export default {
   },
   mounted() {
     // console.log("Ticket Modal Mounted with ticket:", this.ticket);
+  },
+  methods: {
+    priorityClass(priority) {
+      if (priority === "High" || priority === "Critical") return "bg-red-50 text-red-700 border-red-200";
+      if (priority === "Medium") return "bg-amber-50 text-amber-700 border-amber-200";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+    },
+    
+    statusClass(status) {
+      if (status === "Received") return "bg-slate-50 text-slate-700 border-slate-200";
+      if (status === "In Progress") return "bg-blue-50 text-blue-700 border-blue-200";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+    },
   },
 };
 </script>
