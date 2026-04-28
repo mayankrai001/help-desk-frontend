@@ -494,7 +494,6 @@ export default {
 
     openTicket(ticket) {
       this.selectedTicket = ticket;
-      console.log("Selected Ticket:", this.selectedTicket);
       this.showModal = true;
     },
   },
