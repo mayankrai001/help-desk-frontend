@@ -35,6 +35,7 @@
           <option value="">All Status</option>
           <option>Received</option>
           <option>In Progress</option>
+          <option>Pending</option>
           <option>Completed</option>
         </select>
 
@@ -57,6 +58,28 @@
             {{ dept }}
           </option>
         </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          @click="showExportOptions"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
+        >
+          <svg
+            class="w-4 h-4 transition-transform group-hover:scale-110"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
+          </svg>
+          Export CSV
+        </button>
       </div>
     </div>
 
@@ -495,6 +518,128 @@ export default {
     openTicket(ticket) {
       this.selectedTicket = ticket;
       this.showModal = true;
+    },
+
+    async showExportOptions() {
+      const { value: exportType } = await Swal.fire({
+        title: "Export Tickets",
+        text: "Select a range for the CSV export",
+        icon: "info",
+        input: "select",
+        inputOptions: {
+          this_month: "This Month",
+          last_month: "Last Month",
+          last_3_months: "Last 3 Months",
+          manual: "Manual Date Range",
+        },
+        inputPlaceholder: "Select export range",
+        showCancelButton: true,
+        confirmButtonColor: "#2563EB",
+        cancelButtonColor: "#94A3B8",
+        confirmButtonText: "Continue",
+      });
+
+      if (!exportType) return;
+
+      let startDate, endDate;
+      const now = new Date();
+
+      if (exportType === "this_month") {
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      } else if (exportType === "last_month") {
+        startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+      } else if (exportType === "last_3_months") {
+        startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+        endDate = now;
+      } else if (exportType === "manual") {
+        const { value: formValues } = await Swal.fire({
+          title: "Select Date Range",
+          html:
+            '<div class="flex flex-col gap-4 text-left p-2">' +
+            '<label class="text-sm font-medium text-slate-700">Start Date</label>' +
+            '<input id="swal-input1" type="date" class="swal2-input !mt-0 !w-full !mx-0 rounded-xl border-slate-200">' +
+            '<label class="text-sm font-medium text-slate-700">End Date</label>' +
+            '<input id="swal-input2" type="date" class="swal2-input !mt-0 !w-full !mx-0 rounded-xl border-slate-200">' +
+            "</div>",
+          focusConfirm: false,
+          showCancelButton: true,
+          confirmButtonColor: "#2563EB",
+          cancelButtonColor: "#94A3B8",
+          preConfirm: () => {
+            return [
+              document.getElementById("swal-input1").value,
+              document.getElementById("swal-input2").value,
+            ];
+          },
+        });
+
+        if (formValues) {
+          [startDate, endDate] = formValues;
+          if (!startDate || !endDate) {
+            Swal.fire("Error", "Please select both start and end dates", "error");
+            return;
+          }
+        } else {
+          return;
+        }
+      }
+
+      this.executeExport(startDate, endDate);
+    },
+
+    async executeExport(start, end) {
+      try {
+        Swal.fire({
+          title: "Generating CSV...",
+          text: "Please wait while we prepare your data.",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const startStr =
+          start instanceof Date ? start.toISOString() : new Date(start).toISOString();
+        const endStr =
+          end instanceof Date ? end.toISOString() : new Date(end).toISOString();
+
+        // Use the configured api instance
+        const api = (await import("@/api/axios")).default;
+        const response = await api.get("/tickets/admin/export", {
+          params: { startDate: startStr, endDate: endStr },
+          responseType: "blob",
+        });
+
+        // Download the file
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `tickets_export_${new Date().toISOString().split("T")[0]}.csv`,
+        );
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        Swal.close();
+        Swal.fire({
+          title: "Success!",
+          text: "CSV export has been downloaded.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Export Failed",
+          text: error.response?.data?.message || "Something went wrong while exporting.",
+          icon: "error",
+          confirmButtonColor: "#EF4444",
+        });
+      }
     },
   },
 };
