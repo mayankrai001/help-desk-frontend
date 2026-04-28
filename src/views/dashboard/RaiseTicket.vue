@@ -113,7 +113,11 @@
               class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
             >
               <option value="" disabled>Select Category</option>
-              <option v-for="cat in categories" :key="cat._id" :value="cat.name">
+              <option
+                v-for="cat in categories"
+                :key="cat._id"
+                :value="cat.name"
+              >
                 {{ cat.name }}
               </option>
             </select>
@@ -244,6 +248,59 @@
           </div>
         </div>
 
+        <!-- Country -->
+        <div class="mb-5">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
+            Country
+          </label>
+
+          <div class="relative group">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <select
+              v-model="country"
+              class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
+            >
+              <option value="" disabled>Select Country</option>
+              <option>India</option>
+              <option>Singapore</option>
+              <option>Thailand</option>
+              <option>Malaysia</option>
+              <option>Cambodia</option>
+              <option>Indonesia</option>
+              <option>Vietnam</option>
+            </select>
+            <!-- Custom Dropdown Arrow -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
         <!-- Priority -->
         <div class="mb-5">
           <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
@@ -276,7 +333,6 @@
               <option>Low</option>
               <option>Medium</option>
               <option>High</option>
-              <option>Critical</option>
             </select>
             <!-- Custom Dropdown Arrow -->
             <div
@@ -342,7 +398,9 @@
       <!-- Submit Button -->
       <button
         @click="submitTicket"
-        :disabled="!category || !priority || !description || !department || loading"
+        :disabled="
+          !category || !priority || !description || !department || !country || loading
+        "
         class="relative w-full sm:w-auto sm:min-w-[200px] overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl px-6 py-4 transition-all duration-300 transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed hover:shadow-[0_12px_24px_rgba(37,99,235,0.25)] hover:-translate-y-0.5 before:absolute before:inset-0 before:bg-white/20 before:translate-x-full hover:before:animate-[shimmer_1s] flex items-center justify-center gap-2"
       >
         <svg
@@ -395,6 +453,7 @@ export default {
       subCategory: "",
       department: "",
       priority: "",
+      country: "",
       description: "",
       successMessage: "",
       loading: false,
@@ -459,12 +518,12 @@ export default {
           "Audio Not Working",
           "Camera Not Working",
         ],
-        "Power BI":[
+        "Power BI": [
           "Dashboard refresh request",
           "License request",
           "New reports creation request",
-          "Old report changes request"
-        ]
+          "Old report changes request",
+        ],
       };
       return map[this.category] || [];
     },
@@ -492,6 +551,7 @@ export default {
         department: this.department,
         priority: this.priority,
         description: this.description,
+        country: this.country,
         userEmail: this.currentUser?.email || "",
       };
       await this.createTicket(payload);
@@ -503,6 +563,7 @@ export default {
       this.subCategory = "";
       this.department = "";
       this.priority = "";
+      this.country = "";
       this.description = "";
 
       this.$router.push("/my-tickets");
