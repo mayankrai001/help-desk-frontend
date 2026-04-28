@@ -71,15 +71,27 @@
           >
             <tr>
               <th scope="col" class="px-6 py-4 tracking-wider">Ticket ID</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Action</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Action
+              </th>
               <th scope="col" class="px-6 py-4 tracking-wider">Raised By</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Assigned To</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Assigned To
+              </th>
               <th scope="col" class="px-6 py-4 tracking-wider">Category</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Priority
+              </th>
               <th scope="col" class="px-6 py-4 tracking-wider">Department</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Status</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Update Status</th>
-              <th scope="col" class="px-6 py-4 tracking-wider text-center">Delegate</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Status
+              </th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Update Status
+              </th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">
+                Delegate
+              </th>
             </tr>
           </thead>
 
@@ -347,7 +359,7 @@ export default {
     filteredTickets() {
       return this.tickets.filter((ticket) => {
         const searchTerm = this.search.toLowerCase();
-        const matchSearch = 
+        const matchSearch =
           ticket.ticketId.toLowerCase().includes(searchTerm) ||
           (ticket.userId?.name || "").toLowerCase().includes(searchTerm);
 
@@ -482,6 +494,7 @@ export default {
 
     openTicket(ticket) {
       this.selectedTicket = ticket;
+      console.log("Selected Ticket:", this.selectedTicket);
       this.showModal = true;
     },
   },
