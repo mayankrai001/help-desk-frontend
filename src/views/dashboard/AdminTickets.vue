@@ -581,6 +581,24 @@ export default {
             Swal.fire("Error", "Please select both start and end dates", "error");
             return;
           }
+
+          if (startDate === endDate) {
+            Swal.fire(
+              "Invalid Range",
+              "Start and End dates cannot be the same. Please select a valid range.",
+              "warning",
+            );
+            return;
+          }
+
+          if (new Date(startDate) > new Date(endDate)) {
+            Swal.fire(
+              "Invalid Range",
+              "Start date cannot be after the end date.",
+              "warning",
+            );
+            return;
+          }
         } else {
           return;
         }
@@ -602,8 +620,17 @@ export default {
 
         const startStr =
           start instanceof Date ? start.toISOString() : new Date(start).toISOString();
-        const endStr =
-          end instanceof Date ? end.toISOString() : new Date(end).toISOString();
+
+        let endStr;
+        if (end instanceof Date) {
+          endStr = end.toISOString();
+        } else {
+          // For manual string dates (YYYY-MM-DD), send as is or append end of day
+          // The backend already handles the 10-char string check, but let's be explicit
+          const endWithTime = new Date(end);
+          endWithTime.setHours(23, 59, 59, 999);
+          endStr = endWithTime.toISOString();
+        }
 
         // Use the configured api instance
         const api = (await import("@/api/axios")).default;
