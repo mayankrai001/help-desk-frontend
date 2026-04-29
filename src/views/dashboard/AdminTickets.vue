@@ -58,6 +58,20 @@
             {{ dept }}
           </option>
         </select>
+
+        <select
+          v-model="assignedToFilter"
+          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium"
+        >
+          <option value="">All Assigned</option>
+          <option
+            v-for="admin in allAdmins"
+            :key="admin.email"
+            :value="admin.email"
+          >
+            {{ admin.name || admin.email }}
+          </option>
+        </select>
       </div>
 
       <div class="flex items-center gap-2">
@@ -220,6 +234,7 @@
                   <option disabled value="">Change</option>
                   <option value="Received">Received</option>
                   <option value="In Progress">In Progress</option>
+                  <option value="Pending">Pending</option>
                   <option value="Completed">Completed</option>
                 </select>
               </td>
@@ -337,6 +352,7 @@ export default {
       statusFilter: "",
       priorityFilter: "",
       departmentFilter: "",
+      assignedToFilter: "",
       page: 1,
       perPage: 20,
 
@@ -395,7 +411,17 @@ export default {
         const matchDepartment =
           !this.departmentFilter || ticket.department === this.departmentFilter;
 
-        return matchSearch && matchStatus && matchPriority && matchDepartment;
+        const matchAssignedTo =
+          !this.assignedToFilter ||
+          ticket.assignedToEmail === this.assignedToFilter;
+
+        return (
+          matchSearch &&
+          matchStatus &&
+          matchPriority &&
+          matchDepartment &&
+          matchAssignedTo
+        );
       });
     },
 
@@ -578,7 +604,11 @@ export default {
         if (formValues) {
           [startDate, endDate] = formValues;
           if (!startDate || !endDate) {
-            Swal.fire("Error", "Please select both start and end dates", "error");
+            Swal.fire(
+              "Error",
+              "Please select both start and end dates",
+              "error",
+            );
             return;
           }
 
@@ -619,7 +649,9 @@ export default {
         });
 
         const startStr =
-          start instanceof Date ? start.toISOString() : new Date(start).toISOString();
+          start instanceof Date
+            ? start.toISOString()
+            : new Date(start).toISOString();
 
         let endStr;
         if (end instanceof Date) {
@@ -662,7 +694,9 @@ export default {
       } catch (error) {
         Swal.fire({
           title: "Export Failed",
-          text: error.response?.data?.message || "Something went wrong while exporting.",
+          text:
+            error.response?.data?.message ||
+            "Something went wrong while exporting.",
           icon: "error",
           confirmButtonColor: "#EF4444",
         });

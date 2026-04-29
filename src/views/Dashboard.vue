@@ -12,7 +12,7 @@
     </div>
 
     <!-- Stats grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <!-- Total Tickets -->
       <div
         class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.1)] hover:-translate-y-1 transition-all duration-300"
@@ -31,7 +31,9 @@
               {{ totalTickets }}
             </h3>
           </div>
-          <div class="p-3.5 bg-gradient-to-br from-blue-50 to-blue-100/50 text-blue-600 rounded-2xl shadow-[0_4px_12px_rgba(59,130,246,0.15)] group-hover:scale-110 transition-transform duration-300">
+          <div
+            class="p-3.5 bg-gradient-to-br from-blue-50 to-blue-100/50 text-blue-600 rounded-2xl shadow-[0_4px_12px_rgba(59,130,246,0.15)] group-hover:scale-110 transition-transform duration-300"
+          >
             <svg
               class="w-6 h-6"
               fill="none"
@@ -67,7 +69,47 @@
               {{ openTickets }}
             </h3>
           </div>
-          <div class="p-3.5 bg-gradient-to-br from-amber-50 to-amber-100/50 text-amber-500 rounded-2xl shadow-[0_4px_12px_rgba(245,158,11,0.15)] group-hover:scale-110 transition-transform duration-300">
+          <div
+            class="p-3.5 bg-gradient-to-br from-amber-50 to-amber-100/50 text-amber-500 rounded-2xl shadow-[0_4px_12px_rgba(245,158,11,0.15)] group-hover:scale-110 transition-transform duration-300"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Requests -->
+      <div
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(148,163,184,0.1)] hover:-translate-y-1 transition-all duration-300"
+      >
+        <div
+          class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-slate-400/20 rounded-full blur-2xl group-hover:bg-slate-400/30 transition-colors duration-300 pointer-events-none"
+        ></div>
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <p
+              class="text-slate-400 text-xs font-bold mb-1.5 uppercase tracking-widest"
+            >
+              Pending Requests
+            </p>
+            <h3 class="text-4xl font-extrabold text-slate-500 tracking-tight">
+              {{ pendingTickets }}
+            </h3>
+          </div>
+          <div
+            class="p-3.5 bg-gradient-to-br from-slate-50 to-slate-100/50 text-slate-500 rounded-2xl shadow-[0_4px_12px_rgba(148,163,184,0.15)] group-hover:scale-110 transition-transform duration-300"
+          >
             <svg
               class="w-6 h-6"
               fill="none"
@@ -103,7 +145,9 @@
               {{ completedTickets }}
             </h3>
           </div>
-          <div class="p-3.5 bg-gradient-to-br from-emerald-50 to-emerald-100/50 text-emerald-500 rounded-2xl shadow-[0_4px_12px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-300">
+          <div
+            class="p-3.5 bg-gradient-to-br from-emerald-50 to-emerald-100/50 text-emerald-500 rounded-2xl shadow-[0_4px_12px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-300"
+          >
             <svg
               class="w-6 h-6"
               fill="none"
@@ -129,7 +173,9 @@
       <div
         class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
       >
-        <h2 class="text-xl font-bold text-slate-800 tracking-tight">Recent Tickets</h2>
+        <h2 class="text-xl font-bold text-slate-800 tracking-tight">
+          Recent Tickets
+        </h2>
       </div>
 
       <!-- Recent Tickets Table Component -->
@@ -157,6 +203,7 @@ export default {
       "totalTickets",
       "openTickets",
       "completedTickets",
+      "pendingTickets",
     ]),
   },
 

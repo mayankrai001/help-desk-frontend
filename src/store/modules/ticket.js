@@ -55,6 +55,9 @@ const getters = {
 
   completedTickets: (state) =>
     state.tickets.filter((t) => t.status === "Completed").length,
+
+  pendingTickets: (state) =>
+    state.tickets.filter((t) => t.status === "Pending").length,
 };
 
 export default {
